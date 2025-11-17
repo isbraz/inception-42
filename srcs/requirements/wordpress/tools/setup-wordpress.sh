@@ -1,12 +1,17 @@
 #!/bin/bash
+set -e
 
+echo "Waiting for MariaDB to be ready..."
 until mysqladmin ping -h mariadb -u ${MYSQL_USER} -p${MYSQL_PASSWORD} --silent 2>/dev/null; do
-    sleep 1
+    echo "MariaDB is unavailable - sleeping"
+    sleep 2
 done
+echo "MariaDB is up!"
 
 cd /var/www/html
 
 if [ ! -f "wp-config.php" ]; then
+    echo "Setting up WordPress..."
     
     wp core download --allow-root
     
@@ -32,6 +37,11 @@ if [ ! -f "wp-config.php" ]; then
     
     chown -R www-data:www-data /var/www/html
     chmod -R 755 /var/www/html
+    
+    echo "WordPress setup complete!"
+else
+    echo "WordPress already configured!"
 fi
 
+echo "Starting PHP-FPM..."
 exec php-fpm7.4 -F

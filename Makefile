@@ -6,6 +6,8 @@ build:
 	@docker compose -f srcs/docker-compose.yml build
 
 up:
+	@mkdir -p /home/ismael/data/mariadb
+	@mkdir -p /home/ismael/data/wordpress
 	@docker compose -f srcs/docker-compose.yml down 2>/dev/null || true
 	@sleep 1
 	@docker compose -f srcs/docker-compose.yml up -d
