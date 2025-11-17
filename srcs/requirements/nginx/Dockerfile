@@ -5,21 +5,19 @@ RUN apt-get update && apt-get install -y \
     openssl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create SSL certificates directory
 RUN mkdir -p /etc/nginx/ssl
 
-# Generate self-signed SSL certificate
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/nginx.key \
     -out /etc/nginx/ssl/nginx.crt \
     -subj "/C=PT/ST=Lisbon/L=Lisbon/O=42/OU=42Lisboa/CN=isbraz-d.42.fr"
 
-# Copy nginx configuration
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
-# Create directory for PID file
 RUN mkdir -p /run/nginx
 
 EXPOSE 443
+
+STOPSIGNAL SIGQUIT
 
 CMD ["nginx", "-g", "daemon off;"]
