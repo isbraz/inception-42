@@ -1,0 +1,11 @@
+# Environment variables
+srcs/.env
+
+# Secrets
+secrets/
+
+# Data volumes
+/home/ismael/data/
+
+# Docker
+.dockerignore
