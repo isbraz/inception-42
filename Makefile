@@ -29,8 +29,7 @@ clean:
 	@docker volume rm -f srcs_mariadb_data srcs_wordpress_data 2>/dev/null || true
 
 fclean: clean
-	@sudo rm -rf /home/ismael/data/wordpress/*
-	@sudo rm -rf /home/ismael/data/mariadb/*
+	@docker run --rm -v /home/ismael/data:/data alpine sh -c "rm -rf /data/wordpress/* /data/mariadb/*" 2>/dev/null || true
 	@docker system prune -af --volumes 2>/dev/null || true
 
 re: fclean all
